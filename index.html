@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Olympiad Codebusters Practice</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #2ecc71;
+            --background-color: #ecf0f1;
+            --dark-text: #2c3e50;
+            --light-text: #ecf0f1;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--dark-text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* Header */
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Container Styling */
+        .container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin: 20px auto;
+            padding: 25px;
+            max-width: 850px;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Headings */
+        .heading {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .heading::before {
+            content: '✦';
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+
+        /* Form Elements */
+        input,
+        select {
+            padding: 10px 14px;
+            margin: 8px 0;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+        }
+
+        select {
+            background-color: white;
+            cursor: pointer;
+        }
+
+        /* Buttons */
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        #generateBtn {
+            background-color: var(--primary-color);
+        }
+
+        #generateBtn:hover {
+            background-color: #1a2530;
+        }
+
+        #checkAnswerBtn {
+            background-color: var(--success-color);
+        }
+
+        #checkAnswerBtn:hover {
+            background-color: #27ae60;
+        }
+
+        #showHintBtn,
+        #showSolutionBtn {
+            background-color: #f39c12;
+        }
+
+        #showHintBtn:hover,
+        #showSolutionBtn:hover {
+            background-color: #d35400;
+        }
+
+        /* Encrypted Text Display */
+        #encryptedText {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.4rem;
+            margin: 20px 0;
+            letter-spacing: 3px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border-left: 5px solid var(--primary-color);
+            overflow-wrap: break-word;
+            line-height: 1.8;
+        }
+
+        /* Monoalphabetic Table */
+        .monoalpha-table {
+            border-collapse: collapse;
+            margin: 15px 0;
+            width: 100%;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .monoalpha-table td,
+        .monoalpha-table th {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .monoalpha-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .monoalpha-table td {
+            background-color: #f8f9fa;
+        }
+
+        .monoalpha-table input {
+            width: 25px;
+            height: 25px;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+        }
+
+        /* Result Messages */
+        .error {
+            color: var(--accent-color);
+            font-weight: bold;
+            padding: 10px;
+            background-color: rgba(231, 76, 60, 0.1);
+            border-radius: var(--border-radius);
+            display: inline-block;
+        }
+
+        .success {
+            color: var(--success-color);
+            font-weight: bold;
+            padding: 10px;
+            background-color: rgba(46, 204, 113, 0.1);
+            border-radius: var(--border-radius);
+            display: inline-block;
+        }
+
+        #resultMessage {
+            margin: 15px 0;
+        }
+
+        /* Hint and Solution */
+        .hint {
+            background-color: #fef9e7;
+            padding: 15px;
+            border-left: 5px solid #f1c40f;
+            margin: 15px 0;
+            display: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Labels */
+        label {
+            font-weight: 600;
+            display: block;
+            margin-top: 10px;
+            color: var(--primary-color);
+        }
+
+        /* Problem Description */
+        #problemDescription {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Answer Section */
+        #answerSection {
+            border-top: 2px dashed #ddd;
+            margin-top: 20px;
+            padding-top: 20px;
+        }
+
+        /* Cipher Specific Inputs */
+        #cipherSpecificInputs {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+        }
+
+        /* Hill Cipher Matrix */
+        #cipherSpecificInputs input[type="number"] {
+            text-align: center;
+            margin: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            #encryptedText {
+                font-size: 1.2rem;
+                letter-spacing: 2px;
+            }
+
+            button {
+                width: 100%;
+                margin: 8px 0;
+            }
+
+            .monoalpha-table td,
+            .monoalpha-table th {
+                padding: 6px 4px;
+                font-size: 14px;
+            }
+        }
+
+        /* Page background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, rgba(231, 76, 60, 0.05), transparent),
+                radial-gradient(circle at bottom right, rgba(52, 152, 219, 0.05), transparent);
+            z-index: -1;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Science Olympiad Codebusters Practice</h1>
+
+    <div class="container">
+        <div class="heading">Select Cipher</div>
+        <select id="cipherSelect">
+            <option value="caesar">Caesar Cipher</option>
+            <option value="atbash">Atbash Cipher</option>
+            <option value="monoalphabetic">Monoalphabetic Substitution/Aristocrat</option>
+            <option value="affine">Affine Cipher</option>
+            <option value="hill2x2">Hill Cipher (2x2)</option>
+            <option value="baconian">Baconian Cipher</option>
+            <option value="porta">Porta Cipher</option>
+            <option value="nihilist">Nihilist Cipher</option>
+            <option value="pollux">Pollux Cipher</option>
+        </select>
+        <button id="generateBtn">Generate New Problem</button>
+    </div>
+
+    <div class="container" id="problemContainer">
+        <div class="heading">Problem</div>
+        <div id="problemDescription"></div>
+        <div id="encryptedText"></div>
+
+        <div id="cipherSpecificInputs"></div>
+
+        <div id="answerSection">
+            <label for="userAnswer">Your answer (plaintext):</label>
+            <input type="text" id="userAnswer" placeholder="Enter your solution">
+            <button id="checkAnswerBtn">Check Answer</button>
+        </div>
+        <a href="comprehensive-cryptography-learning-platform.html">View All Codes</a>
+
+        <div id="resultMessage"></div>
+        <button id="showHintBtn">Show Hint</button>
+        <div id="hintText" class="hint"></div>
+        <button id="showSolutionBtn">Show Solution</button>
+        <div id="solutionText" class="hint"></div>
+    </div>
+
+    <script>
+        // Constants and utilities
+        const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        function mod(n, m) {
+            return ((n % m) + m) % m; // Proper modulo for negative numbers
+        }
+
+        function gcd(a, b) {
+            if (b === 0) return a;
+            return gcd(b, a % b);
+        }
+
+        function modInverse(a, m) {
+            for (let x = 1; x < m; x++) {
+                if ((a * x) % m === 1) {
+                    return x;
+                }
+            }
+            return 1; // Default if no inverse exists
+        }
+
+        function matrixDeterminant(matrix) {
+            return (matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]);
+        }
+
+        function matrixInverse(matrix) {
+            const det = matrixDeterminant(matrix);
+            const detInv = modInverse(mod(det, 26), 26);
+
+            const adjugate = [
+                [matrix[1][1], -matrix[0][1]],
+                [-matrix[1][0], matrix[0][0]]
+            ];
+
+            const inverse = [
+                [mod(adjugate[0][0] * detInv, 26), mod(adjugate[0][1] * detInv, 26)],
+                [mod(adjugate[1][0] * detInv, 26), mod(adjugate[1][1] * detInv, 26)]
+            ];
+
+            return inverse;
+        }
+
+        // Random text generator
+        function getRandomText(length = 15) {
+            const words = [
+                "SCIENCE", "OLYMPIAD", "DIVISION", "CIPHER", "DECODE", "ENCRYPT",
+                "PROBLEM", "SOLUTION", "CRYPTOGRAPHY", "MATHEMATICS", "COMPETITION",
+                "CHALLENGE", "SUBSTITUTION", "ALGORITHM", "FREQUENCY", "ANALYSIS",
+                "PATTERN", "SECURITY", "MESSAGE", "DECRYPTION", "CODE", "SHIFT",
+                "KNOWLEDGE", "PRACTICE", "SPEED", "ACCURATE", "WINNING"
+            ];
+
+            let text = "";
+            while (text.length < length) {
+                const word = words[Math.floor(Math.random() * words.length)];
+                text += word + " ";
+            }
+
+            return text.trim().slice(0, length);
+        }
+
+        // Cipher implementations
+        const ciphers = {
+            caesar: {
+                encrypt: function (text, key) {
+                    return text.split('').map(char => {
+                        if (char === ' ') return ' ';
+                        const charIndex = LETTERS.indexOf(char.toUpperCase());
+                        if (charIndex === -1) return char;
+                        return LETTERS[mod(charIndex + key, 26)];
+                    }).join('');
+                },
+                decrypt: function (text, key) {
+                    return this.encrypt(text, -key);
+                },
+                generateProblem: function () {
+                    const key = Math.floor(Math.random() * 25) + 1;
+                    const plaintext = getRandomText();
+                    const ciphertext = this.encrypt(plaintext, key);
+
+                    return {
+                        key: key,
+                        plaintext: plaintext,
+                        ciphertext: ciphertext,
+                        description: `Decrypt this message that has been encrypted with a Caesar cipher (shift = ${key}):`,
+                        hint: "In a Caesar cipher, each letter is shifted by the key amount in the alphabet. To decrypt, shift each letter back by the key amount.",
+                        solution: `The key is ${key}. Shift each letter back by ${key} positions in the alphabet.`
+                    };
+                },
+                renderInputs: function () {
+                    return `
+                        <div>
+                            <label for="caesarKey">Shift value (key):</label>
+                            <input type="number" id="caesarKey" min="1" max="25" value="3">
+                        </div>
+                    `;
+                }
+            },
+
+            atbash: {
+                encrypt: function (text) {
+                    return text.split('').map(char => {
+                        if (char === ' ') return ' ';
+                        const charIndex = LETTERS.indexOf(char.toUpperCase());
+                        if (charIndex === -1) return char;
+                        return LETTERS[25 - charIndex];
+                    }).join('');
+                },
+                decrypt: function (text) {
+                    return this.encrypt(text); // Atbash is its own inverse
+                },
+                generateProblem: function () {
+                    const plaintext = getRandomText();
+                    const ciphertext = this.encrypt(plaintext);
+
+                    return {
+                        plaintext: plaintext,
+                        ciphertext: ciphertext,
+                        description: "Decrypt this message that has been encrypted with an Atbash cipher:",
+                        hint: "In an Atbash cipher, each letter is replaced with its mirror letter in the alphabet. A becomes Z, B becomes Y, etc.",
+                        solution: "To solve, replace each letter with its opposite in the alphabet: A↔Z, B↔Y, C↔X, etc."
+                    };
+                },
+                renderInputs: function () {
+                    return `<p>The Atbash cipher has no key. Each letter is replaced with its mirror in the alphabet (A→Z, B→Y, etc.).</p>`;
+                }
+            },
+
+            vigenere: {
+                encrypt: function (text, key) {
+                    let result = "";
+                    let keyIndex = 0;
+
+                    for (let i = 0; i < text.length; i++) {
+                        const char = text[i];
+                        if (char === ' ') {
+                            result += ' ';
+                            continue;
+                        }
+
+                        const charIndex = LETTERS.indexOf(char.toUpperCase());
+                        if (charIndex === -1) {
+                            result += char;
+                            continue;
+                        }
+
+                        const keyChar = key[keyIndex % key.length].toUpperCase();
+                        const keyValue = LETTERS.indexOf(keyChar);
+                        const encryptedIndex = (charIndex + keyValue) % 26;
+
+                        result += LETTERS[encryptedIndex];
+                        keyIndex++;
+                    }
+
+                    return result;
+                },
+                decrypt: function (text, key) {
+                    let result = "";
+                    let keyIndex = 0;
+
+                    for (let i = 0; i < text.length; i++) {
+                        const char = text[i];
+                        if (char === ' ') {
+                            result += ' ';
+                            continue;
+                        }
+
+                        const charIndex = LETTERS.indexOf(char.toUpperCase());
+                        if (charIndex === -1) {
+                            result += char;
+                            continue;
+                        }
+
+                        const keyChar = key[keyIndex % key.length].toUpperCase();
+                        const keyValue = LETTERS.indexOf(keyChar);
+                        const decryptedIndex = mod(charIndex - keyValue, 26);
+
+                        result += LETTERS[decryptedIndex];
+                        keyIndex++;
+                    }
+
+                    return result;
+                },
+                generateProblem: function () {
+                    const keywords = ["KEY", "OLYMPIC", "SCIENCE", "CRYPTO", "CODE", "PUZZLE"];
+                    const key = keywords[Math.floor(Math.random() * keywords.length)];
+                    const plaintext = getRandomText();
+                    const ciphertext = this.encrypt(plaintext, key);
+
+                    return {
+                        key: key,
+                        plaintext: plaintext,
+                        ciphertext: ciphertext,
+                        description: `Decrypt this message that has been encrypted with a Vigenère cipher (keyword = "${key}"):`,
+                        hint: `In a Vigenère cipher, each letter is shifted according to the corresponding letter in the keyword. Convert the keyword '${key}' to numbers (A=0, B=1, etc.) and use these as shift values in sequence.`,
+                        solution: `The keyword is ${key}. Convert each letter in the keyword to its position value (${key.split('').map(c => LETTERS.indexOf(c)).join(', ')}). Then subtract these values from the corresponding ciphertext letters (cycling through the keyword).`
+                    };
+                },
+                renderInputs: function () {
+                    return `
+                        <div>
+                            <label for="vigenereKey">Keyword:</label>
+                            <input type="text" id="vigenereKey" placeholder="Enter keyword" value="KEY">
+                        </div>
+                    `;
+                }
+            },
+
+            monoalphabetic: {
+                generateKey: function () {
+                    const shuffled = [...LETTERS].sort(() => Math.random() - 0.5);
+                    const key = {};
+                    for (let i = 0; i < 26; i++) {
+                        key[LETTERS[i]] = shuffled[i];
+                    }
+                    return key;
+                },
+                encrypt: function (text, key) {
+                    return text.split('').map(char => {
+                        if (char === ' ') return ' ';
+                        const upperChar = char.toUpperCase();
+                        return key[upperChar] || char;
+                    }).join('');
+                },
+                decrypt: function (text, key) {
+                    // Create a reverse mapping for decryption
+                    const reverseKey = {};
+                    for (const plain in key) {
+                        reverseKey[key[plain]] = plain;
+                    }
+
+                    return text.split('').map(char => {
+                        if (char === ' ') return ' ';
+                        const upperChar = char.toUpperCase();
+                        return reverseKey[upperChar] || char;
+                    }).join('');
+                },
+                generateProblem: function () {
+                    const key = this.generateKey();
+                    const plaintext = getRandomText();
+                    const ciphertext = this.encrypt(plaintext, key);
+
+                    // Create a formatted key string for display
+                    let keyString = "Plaintext:  ABCDEFGHIJKLMNOPQRSTUVWXYZ\nCiphertext: ";
+                    for (let i = 0; i < 26; i++) {
+                        keyString += key[LETTERS[i]];
+                    }
+
+                    return {
+                        key: key,
+                        plaintext: plaintext,
+                        ciphertext: ciphertext,
+                        description: "Decrypt this message that has been encrypted with a monoalphabetic substitution cipher:",
+                        hint: "In a monoalphabetic substitution, each letter is consistently replaced with another letter. Look for patterns, common words, and letter frequencies to break the code.",
+                        solution: `The substitution key is:\n${keyString}\n\nYou can use this key to map each ciphertext letter back to its plaintext equivalent.`
+                    };
+                },
+                renderInputs: function () {
+                    let html = `
+                        <p>For monoalphabetic substitution, try to determine which letters substitute for which:</p>
+                        <table class="monoalpha-table">
+                            <tr>
+                                <th>Plain</th>
+                    `;
+
+                    for (let i = 0; i < 26; i++) {
+                        html += `<th>${LETTERS[i]}</th>`;
+                    }
+
+                    html += `</tr><tr><th>Cipher</th>`;
+
+                    for (let i = 0; i < 26; i++) {
+                        html += `<td><input type="text" id="mono-${LETTERS[i]}" maxlength="1"></td>`;
+                    }
+
+                    html += `</tr></table>`;
+                    return html;
+                }
+            },
+
+            affine: {
+                encrypt: function (text, a, b) {
+                    return text.split('').map(char => {
+                        if (char === ' ') return ' ';
+                        const charIndex = LETTERS.indexOf(char.toUpperCase());
+                        if (charIndex === -1) return char;
+                        const encryptedIndex = mod(a * charIndex + b, 26);
+                        return LETTERS[encryptedIndex];
+                    }).join('');
+                },
+                decrypt: function (text, a, b) {
+                    const aInverse = modInverse(a, 26);
+
+                    return text.split('').map(char => {
+                        if (char === ' ') return ' ';
+                        const charIndex = LETTERS.indexOf(char.toUpperCase());
+                        if (charIndex === -1) return char;
+                        const decryptedIndex = mod(aInverse * (charIndex - b), 26);
+                        return LETTERS[decryptedIndex];
+                    }).join('');
+                },
+                generateProblem: function () {
+                    // Choose a value for 'a' that has a multiplicative inverse modulo 26
+                    // These are the values that are coprime with 26: 1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25
+                    const validA = [1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25];
+                    const a = validA[Math.floor(Math.random() * validA.length)];
+                    const b = Math.floor(Math.random() * 26);
+
+                    const plaintext = getRandomText();
+                    const ciphertext = this.encrypt(plaintext, a, b);
+
+                    return {
+                        a: a,
+                        b: b,
+                        plaintext: plaintext,
+                        ciphertext: ciphertext,
+                        description: `Decrypt this message that has been encrypted with an Affine cipher (a = ${a}, b = ${b}):`,
+                        hint: `In an Affine cipher, each letter position (0-25) is transformed using the formula (a*x + b) mod 26. To decrypt, you need to find the modular multiplicative inverse of a (${a}), which is ${modInverse(a, 26)}, and use the formula ${modInverse(a, 26)}*(y-${b}) mod 26.`,
+                        solution: `The Affine parameters are a=${a}, b=${b}. To decrypt, find the modular inverse of ${a} (which is ${modInverse(a, 26)}), then compute ${modInverse(a, 26)}*(ciphertext position - ${b}) mod 26 for each letter.`
+                    };
+                },
+                renderInputs: function () {
+                    return `
+                        <div>
+                            <label for="affineA">a value (must be coprime with 26):</label>
+                            <input type="number" id="affineA" min="1" max="25" value="5">
+                            <label for="affineB">b value:</label>
+                            <input type="number" id="affineB" min="0" max="25" value="8">
+                        </div>
+                    `;
+                }
+            },
+
+            hill2x2: {
+                encrypt: function (text, keyMatrix) {
+                    // Ensure the text length is even by padding if necessary
+                    if (text.length % 2 !== 0) {
+                        text += 'X';
+                    }
+
+                    let result = "";
+
+                    for (let i = 0; i < text.length; i += 2) {
+                        if (text[i] === ' ' || text[i + 1] === ' ') {
+                            // Skip spaces or add them directly to result
+                            if (text[i] === ' ') {
+                                result += ' ';
+                                i--; // Adjust i to process next character properly
+                                continue;
+                            }
+                            if (text[i + 1] === ' ' && i + 1 < text.length) {
+                                result += text[i] + ' ';
+                                continue;
+                            }
+                        }
+
+                        const char1 = text[i].toUpperCase();
+                        const char2 = (i + 1 < text.length) ? text[i + 1].toUpperCase() : 'X';
+
+                        const p1 = LETTERS.indexOf(char1);
+                        const p2 = LETTERS.indexOf(char2);
+
+                        if (p1 === -1 || p2 === -1) {
+                            result += (p1 === -1 ? char1 : LETTERS[p1]) + (p2 === -1 ? char2 : LETTERS[p2]);
+                            continue;
+                        }
+
+                        const c1 = mod(keyMatrix[0][0] * p1 + keyMatrix[0][1] * p2, 26);
+                        const c2 = mod(keyMatrix[1][0] * p1 + keyMatrix[1][1] * p2, 26);
+
+                        result += LETTERS[c1] + LETTERS[c2];
+                    }
+
+                    return result;
+                },
+                decrypt: function (text, keyMatrix) {
+                    // Calculate the matrix inverse
+                    const inverseMatrix = matrixInverse(keyMatrix);
+
+                    let result = "";
+
+                    for (let i = 0; i < text.length; i += 2) {
+                        if (text[i] === ' ' || (i + 1 < text.length && text[i + 1] === ' ')) {
+                            // Skip spaces or add them directly to result
+                            if (text[i] === ' ') {
+                                result += ' ';
+                                i--; // Adjust i to process next character properly
+                                continue;
+                            }
+                            if (text[i + 1] === ' ') {
+                                result += text[i] + ' ';
+                                continue;
+                            }
+                        }
+
+                        const char1 = text[i].toUpperCase();
+                        const char2 = (i + 1 < text.length) ? text[i + 1].toUpperCase() : 'X';
+
+                        const c1 = LETTERS.indexOf(char1);
+                        const c2 = LETTERS.indexOf(char2);
+
+                        if (c1 === -1 || c2 === -1) {
+                            result += (c1 === -1 ? char1 : LETTERS[c1]) + (c2 === -1 ? char2 : LETTERS[c2]);
+                            continue;
+                        }
+
+                        const p1 = mod(inverseMatrix[0][0] * c1 + inverseMatrix[0][1] * c2, 26);
+                        const p2 = mod(inverseMatrix[1][0] * c1 + inverseMatrix[1][1] * c2, 26);
+
+                        result += LETTERS[p1] + LETTERS[p2];
+                    }
+
+                    return result;
+                },
+
+                generateValidMatrix: function () {
+                    // Generate a 2x2 matrix with determinant coprime to 26
+                    let matrix, det;
+                    do {
+                        matrix = [
+                            [Math.floor(Math.random() * 26), Math.floor(Math.random() * 26)],
+                            [Math.floor(Math.random() * 26), Math.floor(Math.random() * 26)]
+                        ];
+                        det = mod(matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0], 26);
+                    } while (gcd(det, 26) !== 1);
+
+                    return matrix;
+                },
+                generateProblem: function () {
+                    const keyMatrix = this.generateValidMatrix();
+                    const plaintext = getRandomText(16);
+                    const ciphertext = this.encrypt(plaintext, keyMatrix);
+
+                    return {
+                        key: keyMatrix,
+                        plaintext: plaintext,
+                        ciphertext: ciphertext,
+                        description: `Decrypt this message that has been encrypted with a Hill cipher (2x2 matrix):<br>
+                                     Key Matrix: [${keyMatrix[0][0]}, ${keyMatrix[0][1]}]<br>
+                                               [${keyMatrix[1][0]}, ${keyMatrix[1][1]}]`,
+                        hint: `For a Hill cipher, you need to find the inverse of the key matrix modulo 26. First, calculate the determinant (${keyMatrix[0][0]}*${keyMatrix[1][1]} - ${keyMatrix[0][1]}*${keyMatrix[1][0]} = ${matrixDeterminant(keyMatrix)}). Then find its modular multiplicative inverse. Finally, use the adjugate matrix and multiply by the inverse of the determinant.`,
+                        solution: `The inverse matrix is:<br>
+                                [${matrixInverse(keyMatrix)[0][0]}, ${matrixInverse(keyMatrix)[0][1]}]<br>
+                                [${matrixInverse(keyMatrix)[1][0]}, ${matrixInverse(keyMatrix)[1][1]}]<br>
+                                Use this to decrypt by multiplying each pair of letters (as numbers 0-25) by this matrix.`
+                    };
+                },
+                renderInputs: function () {
+                    return `
+                        <div>
+                            <p>Hill Cipher 2x2 Matrix:</p>
+                            <input type="number" id="hill-00" min="0" max="25" value="5" style="width: 40px;">
+                            <input type="number" id="hill-01" min="0" max="25" value="17" style="width: 40px;"><br>
+                            <input type="number" id="hill-10" min="0" max="25" value="4" style="width: 40px;">
+                            <input type="number" id="hill-11" min="0" max="25" value="15" style="width: 40px;">
+                        </div>
+                    `;
+                }
+            },
+            // Baconian Cipher (uses binary encoding)
+            baconian: {
+                baconiaCodes: {
+                    'A': '00000', 'B': '00001', 'C': '00010', 'D': '00011',
+                    'E': '00100', 'F': '00101', 'G': '00110', 'H': '00111',
+                    'I': '01000', 'J': '01001', 'K': '01010', 'L': '01011',
+                    'M': '01100', 'N': '01101', 'O': '01110', 'P': '01111',
+                    'Q': '10000', 'R': '10001', 'S': '10010', 'T': '10011',
+                    'U': '10100', 'V': '10101', 'W': '10110', 'X': '10111',
+                    'Y': '11000', 'Z': '11001'
+                },
+                encrypt: function (text) {
+                    return text.toUpperCase().split('').map(char => {
+                        if (char === ' ') return '     '; // Five-space separator
+                        return this.baconiaCodes[char] || char;
+                    }).join(' ');
+                },
+                decrypt: function (text) {
+                    // Reverse the Baconian codes
+                    const reverseCodes = {};
+                    for (const [letter, code] of Object.entries(this.baconiaCodes)) {
+                        reverseCodes[code] = letter;
+                    }
+
+                    // Remove spaces and split into 5-character groups
+                    const cleanText = text.replace(/\s+/g, '');
+                    const groups = cleanText.match(/.{1,5}/g) || [];
+
+                    return groups.map(group => reverseCodes[group] || group).join('');
+                },
+                generateProblem: function () {
+                    const plaintext = getRandomText(10).toUpperCase().replace(/[^A-Z\s]/g, '');
+                    const ciphertext = this.encrypt(plaintext);
+
+                    return {
+                        plaintext: plaintext,
+                        ciphertext: ciphertext,
+                        description: "Decrypt this Baconian cipher (each letter is represented by a 5-character binary code):",
+                        hint: "Each letter is encoded as a 5-character binary code. Spaces between codes. Separate the codes and match them to their corresponding letters.",
+                        solution: "Convert each 5-character group back to its corresponding letter using the Baconian code mapping."
+                    };
+                },
+                renderInputs: function () {
+                    return `
+            <p>Baconian Cipher: Each letter is represented by a 5-character binary code.</p>
+            <div>Example: A = 00000, B = 00001, etc.</div>
+        `;
+                }
+            },
+
+            // Porta Cipher (uses a more complex polyalphabetic substitution)
+            porta: {
+                // Porta cipher key table
+                portaTable: [
+                    ['N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U'],
+                    ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
+                    ['I', 'K', 'J', 'L', 'M', 'N', 'O', 'P']
+                ],
+                encrypt: function (text, key) {
+                    let result = '';
+                    let keyIndex = 0;
+
+                    for (let char of text.toUpperCase()) {
+                        if (char === ' ') {
+                            result += ' ';
+                            continue;
+                        }
+
+                        if (!/[A-Z]/.test(char)) {
+                            result += char;
+                            continue;
+                        }
+
+                        const charIndex = LETTERS.indexOf(char);
+                        const halfIndex = Math.floor(charIndex / 13);
+                        const rowOffset = keyIndex % 2 === 0 ? 0 : 8;
+
+                        const tableRow = this.portaTable[halfIndex];
+                        const offset = charIndex % 13;
+                        const encryptedChar = tableRow[(offset + rowOffset) % 8];
+
+                        result += encryptedChar;
+                        keyIndex++;
+                    }
+
+                    return result;
+                },
+                decrypt: function (text, key) {
+                    // Porta decryption is symmetrical to encryption
+                    return this.encrypt(text, key);
+                },
+                generateProblem: function () {
+                    const keywords = ["KEY", "PORTA", "CIPHER", "CRYPTO"];
+                    const key = keywords[Math.floor(Math.random() * keywords.length)];
+                    const plaintext = getRandomText(15);
+                    const ciphertext = this.encrypt(plaintext, key);
+
+                    return {
+                        key: key,
+                        plaintext: plaintext,
+                        ciphertext: ciphertext,
+                        description: `Decrypt this Porta cipher (keyword = "${key}"):`,
+                        hint: "Porta cipher uses a complex substitution based on a key and a special table. The encryption depends on the position of letters and the key.",
+                        solution: `The keyword is ${key}. Use the Porta cipher table and key to decrypt by reversing the substitution process.`
+                    };
+                },
+                renderInputs: function () {
+                    return `
+            <div>
+                <label for="portaKey">Keyword:</label>
+                <input type="text" id="portaKey" placeholder="Enter keyword" value="KEY">
+            </div>
+        `;
+                }
+            },
+
+            // Nihilist Cipher (uses a Vigenère-like approach with a key square)
+            nihilist: {
+                generateKeySquare: function (key) {
+                    // Create a 5x5 key square (combining I and J)
+                    const alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ';
+                    const cleanKey = key.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
+
+                    // Remove duplicates from key
+                    const uniqueKeyChars = [...new Set(cleanKey.split(''))];
+
+                    // Combine unique key chars with remaining alphabet
+                    const keySquare = [...uniqueKeyChars];
+                    for (let char of alphabet) {
+                        if (!keySquare.includes(char)) {
+                            keySquare.push(char);
+                        }
+                    }
+
+                    return keySquare;
+                },
+                encrypt: function (text, key, keySquare) {
+                    const processedText = text.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
+                    const square = keySquare || this.generateKeySquare(key);
+
+                    let result = '';
+                    let keyIndex = 0;
+
+                    for (let i = 0; i < processedText.length; i++) {
+                        const char = processedText[i];
+                        const keyChar = key[keyIndex % key.length].toUpperCase();
+
+                        // Find coordinates of character and key character in the square
+                        const charCoord = this.findCoordinates(char, square);
+                        const keyCoord = this.findCoordinates(keyChar, square);
+
+                        // Add coordinates
+                        const newRow = (charCoord.row + keyCoord.row) % 5;
+                        const newCol = (charCoord.col + keyCoord.col) % 5;
+
+                        result += square[newRow * 5 + newCol];
+                        keyIndex++;
+                    }
+
+                    return result;
+                },
+                decrypt: function (text, key, keySquare) {
+                    const processedText = text.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
+                    const square = keySquare || this.generateKeySquare(key);
+
+                    let result = '';
+                    let keyIndex = 0;
+
+                    for (let i = 0; i < processedText.length; i++) {
+                        const char = processedText[i];
+                        const keyChar = key[keyIndex % key.length].toUpperCase();
+
+                        // Find coordinates of character and key character in the square
+                        const charCoord = this.findCoordinates(char, square);
+                        const keyCoord = this.findCoordinates(keyChar, square);
+
+                        // Subtract coordinates (with modulo to handle negative)
+                        const newRow = mod(charCoord.row - keyCoord.row, 5);
+                        const newCol = mod(charCoord.col - keyCoord.col, 5);
+
+                        result += square[newRow * 5 + newCol];
+                        keyIndex++;
+                    }
+
+                    return result;
+                },
+                findCoordinates: function (char, square) {
+                    const index = square.indexOf(char);
+                    return {
+                        row: Math.floor(index / 5),
+                        col: index % 5
+                    };
+                },
+                generateProblem: function () {
+                    const keywords = ["CRYPTO", "CIPHER", "DECODE", "SOLVE"];
+                    const key = keywords[Math.floor(Math.random() * keywords.length)];
+                    const plaintext = getRandomText(15).replace(/J/g, 'I');
+                    const keySquare = this.generateKeySquare(key);
+                    const ciphertext = this.encrypt(plaintext, key, keySquare);
+
+                    return {
+                        key: key,
+                        plaintext: plaintext,
+                        ciphertext: ciphertext,
+                        keySquare: keySquare,
+                        description: `Decrypt this Nihilist cipher (keyword = "${key}"):`,
+                        hint: "Nihilist cipher uses a key square and coordinate-based encryption. Convert letters to coordinates, add them, and find the new letter.",
+                        solution: `The keyword is ${key}. Use the key to generate a 5x5 square and decrypt by subtracting coordinate values.`
+                    };
+                },
+                renderInputs: function () {
+                    return `
+            <div>
+                <label for="nihilistKey">Keyword:</label>
+                <input type="text" id="nihilistKey" placeholder="Enter keyword" value="CRYPTO">
+            </div>
+        `;
+                }
+            },
+
+            // Pollux Cipher (uses Morse code and number substitution)
+            pollux: {
+                morseCode: {
+                    'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.',
+                    'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---',
+                    'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---',
+                    'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-',
+                    'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--', 'Z': '--..'
+                },
+                encrypt: function (text, key) {
+                    return text.toUpperCase().split('').map(char => {
+                        if (char === ' ') return ' ';
+                        const morse = this.morseCode[char];
+                        return morse.replace(/\./g, key[0]).replace(/-/g, key[1]);
+                    }).join(' ');
+                },
+                decrypt: function (text, key) {
+                    const dotSymbol = key[0];
+                    const dashSymbol = key[1];
+
+                    // Convert encoded text back to Morse
+                    const morseText = text.split(' ').map(group => {
+                        if (group === '') return ' ';
+                        return group.replace(new RegExp(dotSymbol, 'g'), '.').replace(new RegExp(dashSymbol, 'g'), '-');
+                    }).join(' ');
+
+                    // Decode Morse to letters
+                    return morseText.split(' ').map(morse => {
+                        if (morse === '') return ' ';
+                        for (const [letter, code] of Object.entries(this.morseCode)) {
+                            if (code === morse) return letter;
+                        }
+                        return morse;
+                    }).join('');
+                },
+                generateProblem: function () {
+                    const possibleKeys = [
+                        ['1', '0'], ['2', '3'], ['4', '5'], ['6', '7'], ['8', '9']
+                    ];
+                    const key = possibleKeys[Math.floor(Math.random() * possibleKeys.length)];
+                    const plaintext = getRandomText(15);
+                    const ciphertext = this.encrypt(plaintext, key);
+
+                    return {
+                        key: key,
+                        plaintext: plaintext,
+                        ciphertext: ciphertext,
+                        description: `Decrypt this Pollux cipher (key = ${key.join(', ')}):`,
+                        hint: `Pollux cipher replaces Morse code dots and dashes with two different symbols. Your key is ${key[0]} for dots and ${key[1]} for dashes.`,
+                        solution: `Convert each group back to Morse code using ${key[0]} as dots and ${key[1]} as dashes, then translate Morse to letters.`
+                    };
+                },
+                renderInputs: function () {
+                    return `
+            <div>
+                <label>Pollux Key:</label>
+                <input type="text" id="polluxDot" placeholder="Dot symbol" maxlength="1" value="1">
+                <input type="text" id="polluxDash" placeholder="Dash symbol" maxlength="1" value="0">
+            </div>
+        `;
+                }
+            }
+        };
+
+        // UI Interaction
+        let currentProblem = null;
+
+        document.getElementById('generateBtn').addEventListener('click', generateNewProblem);
+        document.getElementById('checkAnswerBtn').addEventListener('click', checkAnswer);
+        document.getElementById('showHintBtn').addEventListener('click', showHint);
+        document.getElementById('showSolutionBtn').addEventListener('click', showSolution);
+
+        function generateNewProblem() {
+            const cipherType = document.getElementById('cipherSelect').value;
+            const cipher = ciphers[cipherType];
+
+            currentProblem = cipher.generateProblem();
+
+            document.getElementById('problemDescription').innerHTML = currentProblem.description;
+            document.getElementById('encryptedText').textContent = currentProblem.ciphertext;
+            document.getElementById('cipherSpecificInputs').innerHTML = cipher.renderInputs();
+            document.getElementById('userAnswer').value = '';
+            document.getElementById('resultMessage').innerHTML = '';
+            document.getElementById('hintText').style.display = 'none';
+            document.getElementById('hintText').innerHTML = currentProblem.hint;
+            document.getElementById('solutionText').style.display = 'none';
+            document.getElementById('solutionText').innerHTML = currentProblem.solution;
+        }
+
+        function checkAnswer() {
+            if (!currentProblem) {
+                alert("Please generate a problem first!");
+                return;
+            }
+
+            const userAnswer = document.getElementById('userAnswer').value.toUpperCase();
+            const correctAnswer = currentProblem.plaintext.toUpperCase();
+
+            // Compare without spaces
+            const cleanUserAnswer = userAnswer.replace(/\s+/g, '');
+            const cleanCorrectAnswer = correctAnswer.replace(/\s+/g, '');
+
+            const resultDiv = document.getElementById('resultMessage');
+
+            if (cleanUserAnswer === cleanCorrectAnswer) {
+                resultDiv.innerHTML = '<span class="success">Correct! Great job!</span>';
+            } else {
+                resultDiv.innerHTML = '<span class="error">Not quite right. Try again or check the hint.</span>';
+            }
+        }
+
+        function showHint() {
+            const hintDiv = document.getElementById('hintText');
+            hintDiv.style.display = 'block';
+        }
+
+        // Update the showSolution function to display worked-out solution steps
+        function showSolution() {
+            const solutionDiv = document.getElementById('solutionText');
+            solutionDiv.style.display = 'block';
+
+            // Get the current cipher type
+            const cipherType = document.getElementById('cipherSelect').value;
+
+            // Add detailed step-by-step solution based on cipher type
+            let workedSolution = `<h3>Step-by-Step Solution</h3>`;
+
+            switch (cipherType) {
+                case 'caesar':
+                    workedSolution += `
+                <p>Caesar Cipher with shift = ${currentProblem.key}</p>
+                <p>To decrypt, we shift each letter back by ${currentProblem.key} positions:</p>
+                <table class="solution-table">
+                    <tr><th>Ciphertext</th><th>Calculation</th><th>Plaintext</th></tr>
+            `;
+
+                    for (let i = 0; i < currentProblem.ciphertext.length; i++) {
+                        const char = currentProblem.ciphertext[i];
+                        if (char === ' ') continue;
+
+                        const cipherIndex = LETTERS.indexOf(char);
+                        const plainIndex = mod(cipherIndex - currentProblem.key, 26);
+                        const plainChar = LETTERS[plainIndex];
+
+                        workedSolution += `
+                    <tr>
+                        <td>${char}</td>
+                        <td>(${cipherIndex} - ${currentProblem.key}) mod 26 = ${plainIndex}</td>
+                        <td>${plainChar}</td>
+                    </tr>
+                `;
+                    }
+                    workedSolution += `</table>`;
+                    break;
+
+                case 'atbash':
+                    workedSolution += `
+                <p>Atbash Cipher (letter reversal)</p>
+                <p>To decrypt, we replace each letter with its opposite in the alphabet:</p>
+                <table class="solution-table">
+                    <tr><th>Ciphertext</th><th>Calculation</th><th>Plaintext</th></tr>
+            `;
+
+                    for (let i = 0; i < currentProblem.ciphertext.length; i++) {
+                        const char = currentProblem.ciphertext[i];
+                        if (char === ' ') continue;
+
+                        const cipherIndex = LETTERS.indexOf(char);
+                        const plainIndex = 25 - cipherIndex;
+                        const plainChar = LETTERS[plainIndex];
+
+                        workedSolution += `
+                    <tr>
+                        <td>${char}</td>
+                        <td>25 - ${cipherIndex} = ${plainIndex}</td>
+                        <td>${plainChar}</td>
+                    </tr>
+                `;
+                    }
+                    workedSolution += `</table>`;
+                    break;
+
+                case 'vigenere':
+                    workedSolution += `
+                <p>Vigenère Cipher with keyword "${currentProblem.key}"</p>
+                <p>First, convert the keyword to numeric values: `;
+
+                    // Show numerical values of the keyword
+                    const keywordValues = [];
+                    for (let i = 0; i < currentProblem.key.length; i++) {
+                        keywordValues.push(LETTERS.indexOf(currentProblem.key[i].toUpperCase()));
+                    }
+                    workedSolution += keywordValues.join(', ');
+
+                    workedSolution += `</p>
+                <p>To decrypt, subtract the keyword value from each ciphertext letter's value:</p>
+                <table class="solution-table">
+                    <tr><th>Ciphertext</th><th>Key Letter</th><th>Key Value</th><th>Calculation</th><th>Plaintext</th></tr>
+            `;
+
+                    let keyIndex = 0;
+                    for (let i = 0; i < currentProblem.ciphertext.length; i++) {
+                        const char = currentProblem.ciphertext[i];
+                        if (char === ' ') {
+                            workedSolution += `<tr><td colspan="5">Space - skipped</td></tr>`;
+                            continue;
+                        }
+
+                        const cipherIndex = LETTERS.indexOf(char);
+                        const keyChar = currentProblem.key[keyIndex % currentProblem.key.length].toUpperCase();
+                        const keyValue = LETTERS.indexOf(keyChar);
+                        const plainIndex = mod(cipherIndex - keyValue, 26);
+                        const plainChar = LETTERS[plainIndex];
+
+                        workedSolution += `
+                    <tr>
+                        <td>${char}</td>
+                        <td>${keyChar}</td>
+                        <td>${keyValue}</td>
+                        <td>(${cipherIndex} - ${keyValue}) mod 26 = ${plainIndex}</td>
+                        <td>${plainChar}</td>
+                    </tr>
+                `;
+
+                        keyIndex++;
+                    }
+                    workedSolution += `</table>`;
+                    break;
+
+                case 'monoalphabetic':
+                    workedSolution += `
+                <p>Monoalphabetic Substitution</p>
+                <p>The substitution key is:</p>
+                <table class="solution-table">
+                    <tr><th>Plaintext</th>`;
+
+                    for (let i = 0; i < 26; i++) {
+                        workedSolution += `<td>${LETTERS[i]}</td>`;
+                    }
+
+                    workedSolution += `</tr><tr><th>Ciphertext</th>`;
+
+                    for (let i = 0; i < 26; i++) {
+                        workedSolution += `<td>${currentProblem.key[LETTERS[i]]}</td>`;
+                    }
+
+                    workedSolution += `</tr></table>
+                <p>To decrypt, simply replace each ciphertext letter with its corresponding plaintext letter:</p>
+                <table class="solution-table">
+                    <tr><th>Ciphertext</th><th>Plaintext</th></tr>
+            `;
+
+                    // Create a reverse mapping for decryption
+                    const reverseKey = {};
+                    for (const plain in currentProblem.key) {
+                        reverseKey[currentProblem.key[plain]] = plain;
+                    }
+
+                    for (let i = 0; i < currentProblem.ciphertext.length; i++) {
+                        const char = currentProblem.ciphertext[i];
+                        if (char === ' ') {
+                            workedSolution += `<tr><td colspan="2">Space - skipped</td></tr>`;
+                            continue;
+                        }
+
+                        const plainChar = reverseKey[char];
+
+                        workedSolution += `
+                    <tr>
+                        <td>${char}</td>
+                        <td>${plainChar}</td>
+                    </tr>
+                `;
+                    }
+                    workedSolution += `</table>`;
+                    break;
+
+                case 'affine':
+                    const aInverse = modInverse(currentProblem.a, 26);
+
+                    workedSolution += `
+                <p>Affine Cipher with a = ${currentProblem.a}, b = ${currentProblem.b}</p>
+                <p>Step 1: Find the modular multiplicative inverse of a (${currentProblem.a}) modulo 26. This is ${aInverse}.</p>
+                <p>Step 2: Apply the decryption formula for each letter: (a<sup>-1</sup> × (y - b)) mod 26</p>
+                <table class="solution-table">
+                    <tr><th>Ciphertext</th><th>Value (y)</th><th>Calculation</th><th>Plaintext</th></tr>
+            `;
+
+                    for (let i = 0; i < currentProblem.ciphertext.length; i++) {
+                        const char = currentProblem.ciphertext[i];
+                        if (char === ' ') {
+                            workedSolution += `<tr><td colspan="4">Space - skipped</td></tr>`;
+                            continue;
+                        }
+
+                        const cipherIndex = LETTERS.indexOf(char);
+                        const plainIndex = mod(aInverse * (cipherIndex - currentProblem.b), 26);
+                        const plainChar = LETTERS[plainIndex];
+
+                        workedSolution += `
+                    <tr>
+                        <td>${char}</td>
+                        <td>${cipherIndex}</td>
+                        <td>${aInverse} × (${cipherIndex} - ${currentProblem.b}) mod 26 = ${plainIndex}</td>
+                        <td>${plainChar}</td>
+                    </tr>
+                `;
+                    }
+                    workedSolution += `</table>`;
+                    break;
+
+                case 'hill2x2':
+                    const inverseMatrix = matrixInverse(currentProblem.key);
+
+                    workedSolution += `
+                <p>Hill Cipher with 2x2 Matrix:</p>
+                <p>Key Matrix:<br>
+                [${currentProblem.key[0][0]}, ${currentProblem.key[0][1]}]<br>
+                [${currentProblem.key[1][0]}, ${currentProblem.key[1][1]}]</p>
+                
+                <p>Step 1: Calculate determinant = ${currentProblem.key[0][0]} × ${currentProblem.key[1][1]} - ${currentProblem.key[0][1]} × ${currentProblem.key[1][0]} = ${matrixDeterminant(currentProblem.key)}</p>
+                
+                <p>Step 2: Find modular inverse of determinant mod 26 = ${modInverse(mod(matrixDeterminant(currentProblem.key), 26), 26)}</p>
+                
+                <p>Step 3: Calculate inverse matrix:<br>
+                [${inverseMatrix[0][0]}, ${inverseMatrix[0][1]}]<br>
+                [${inverseMatrix[1][0]}, ${inverseMatrix[1][1]}]</p>
+                
+                <p>Step 4: Decrypt by multiplying inverse matrix by each digraph (pair of letters):</p>
+                <table class="solution-table">
+                    <tr><th>Ciphertext Pair</th><th>Values</th><th>Matrix Multiplication</th><th>Plaintext Pair</th></tr>
+            `;
+
+                    for (let i = 0; i < currentProblem.ciphertext.length; i += 2) {
+                        if (i + 1 >= currentProblem.ciphertext.length) break;
+                        if (currentProblem.ciphertext[i] === ' ' || currentProblem.ciphertext[i + 1] === ' ') continue;
+
+                        const char1 = currentProblem.ciphertext[i];
+                        const char2 = currentProblem.ciphertext[i + 1];
+
+                        const c1 = LETTERS.indexOf(char1);
+                        const c2 = LETTERS.indexOf(char2);
+
+                        const p1 = mod(inverseMatrix[0][0] * c1 + inverseMatrix[0][1] * c2, 26);
+                        const p2 = mod(inverseMatrix[1][0] * c1 + inverseMatrix[1][1] * c2, 26);
+
+                        const plain1 = LETTERS[p1];
+                        const plain2 = LETTERS[p2];
+
+                        workedSolution += `
+                    <tr>
+                        <td>${char1}${char2}</td>
+                        <td>[${c1}, ${c2}]</td>
+                        <td>[${inverseMatrix[0][0]}×${c1} + ${inverseMatrix[0][1]}×${c2}, ${inverseMatrix[1][0]}×${c1} + ${inverseMatrix[1][1]}×${c2}] mod 26 = [${p1}, ${p2}]</td>
+                        <td>${plain1}${plain2}</td>
+                    </tr>
+                `;
+                    }
+                    workedSolution += `</table>`;
+                    break;
+
+
+                case 'baconian':
+                    workedSolution += `
+        <p>Baconian Cipher Decryption</p>
+        <p>Each letter is represented by a 5-character binary code:</p>
+        <table class="solution-table">
+            <tr><th>Encoded Group</th><th>Binary Code</th><th>Decrypted Letter</th></tr>
+    `;
+
+                    // Split the ciphertext into 5-character groups
+                    const baconianGroups = currentProblem.ciphertext.split(/\s+/).filter(group => group.length === 5);
+
+                    baconianGroups.forEach(group => {
+                        const letter = ciphers.baconian.baconiaCodes[group] || group;
+
+                        workedSolution += `
+            <tr>
+                <td>${group}</td>
+                <td>Binary Code: ${group}</td>
+                <td>${letter}</td>
+            </tr>
+        `;
+                    });
+
+                    workedSolution += `</table>
+        <p>Decryption Process:</p>
+        <ul>
+            <li>Separate the text into 5-character groups</li>
+            <li>Convert each 5-character group to its corresponding letter</li>
+            <li>A = 00000, B = 00001, and so on</li>
+        </ul>
+    `;
+                    break;
+
+                case 'porta':
+                    workedSolution += `
+        <p>Porta Cipher Decryption (Keyword: ${currentProblem.key})</p>
+        <p>Uses a special substitution table based on the keyword:</p>
+        <table class="solution-table">
+            <tr><th>Ciphertext</th><th>Decryption Process</th><th>Plaintext</th></tr>
+    `;
+
+                    let portaKeyIndex = 0;
+                    for (let i = 0; i < currentProblem.ciphertext.length; i++) {
+                        const char = currentProblem.ciphertext[i];
+
+                        if (char === ' ') {
+                            workedSolution += `<tr><td colspan="3">Space - skipped</td></tr>`;
+                            continue;
+                        }
+
+                        const keyChar = currentProblem.key[portaKeyIndex % currentProblem.key.length];
+                        const charIndex = LETTERS.indexOf(char);
+                        const halfIndex = Math.floor(charIndex / 13);
+                        const rowOffset = portaKeyIndex % 2 === 0 ? 0 : 8;
+
+                        const tableRow = ciphers.porta.portaTable[halfIndex];
+                        const offset = charIndex % 13;
+                        const plainIndex = tableRow.indexOf(char);
+                        const plainChar = LETTERS[halfIndex * 13 + (plainIndex - rowOffset + 8) % 8];
+
+                        workedSolution += `
+            <tr>
+                <td>${char}</td>
+                <td>Key char: ${keyChar}, Half: ${halfIndex}, Offset: ${offset}</td>
+                <td>${plainChar}</td>
+            </tr>
+        `;
+
+                        portaKeyIndex++;
+                    }
+
+                    workedSolution += `</table>
+        <p>Decryption Process:</p>
+        <ul>
+            <li>Use the Porta cipher substitution table</li>
+            <li>Key determines row shifting</li>
+            <li>Decrypt by reversing the substitution</li>
+        </ul>
+    `;
+                    break;
+
+                case 'nihilist':
+                    workedSolution += `
+        <p>Nihilist Cipher Decryption (Keyword: ${currentProblem.key})</p>
+        <p>Key Square:</p>
+        <div class="key-square">
+    `;
+
+                    // Display the key square
+                    const keySquare = currentProblem.keySquare;
+                    for (let i = 0; i < 5; i++) {
+                        workedSolution += `<div>`;
+                        for (let j = 0; j < 5; j++) {
+                            workedSolution += `<span>${keySquare[i * 5 + j]}</span>`;
+                        }
+                        workedSolution += `</div>`;
+                    }
+
+                    workedSolution += `</div>
+        <p>Decryption Process:</p>
+        <table class="solution-table">
+            <tr><th>Ciphertext</th><th>Coordinate Calculation</th><th>Plaintext</th></tr>
+    `;
+
+                    let nihilistKeyIndex = 0;
+                    for (let i = 0; i < currentProblem.ciphertext.length; i++) {
+                        const char = currentProblem.ciphertext[i];
+
+                        if (char === ' ') {
+                            workedSolution += `<tr><td colspan="3">Space - skipped</td></tr>`;
+                            continue;
+                        }
+
+                        const keyChar = currentProblem.key[nihilistKeyIndex % currentProblem.key.length];
+
+                        // Find coordinates
+                        const charCoord = ciphers.nihilist.findCoordinates(char, keySquare);
+                        const keyCoord = ciphers.nihilist.findCoordinates(keyChar, keySquare);
+
+                        // Calculate new coordinates
+                        const newRow = mod(charCoord.row - keyCoord.row, 5);
+                        const newCol = mod(charCoord.col - keyCoord.col, 5);
+
+                        const plainChar = keySquare[newRow * 5 + newCol];
+
+                        workedSolution += `
+            <tr>
+                <td>${char}</td>
+                <td>
+                    Char: (${charCoord.row},${charCoord.col}), 
+                    Key: (${keyCoord.row},${keyCoord.col}) → 
+                    New: (${newRow},${newCol})
+                </td>
+                <td>${plainChar}</td>
+            </tr>
+        `;
+
+                        nihilistKeyIndex++;
+                    }
+
+                    workedSolution += `</table>
+        <p>Key Techniques:</p>
+        <ul>
+            <li>Use 5x5 key square</li>
+            <li>Convert letters to coordinates</li>
+            <li>Subtract key coordinate values</li>
+        </ul>
+    `;
+                    break;
+
+                case 'pollux':
+                    workedSolution += `
+        <p>Converts symbols back to Morse code, then to letters:</p>
+        <table class="solution-table">
+            <tr><th>Encoded Group</th><th>Morse Conversion</th><th>Letter</th></tr>
+    `;
+
+                    const dotSymbol = currentProblem.key[0];
+                    const dashSymbol = currentProblem.key[1];
+
+                    // Split and process each group
+                    currentProblem.ciphertext.split(' ').forEach(group => {
+                        if (group === '') return;
+
+                        // Convert back to Morse
+                        const morseGroup = group
+                            .replace(new RegExp(`\\${dotSymbol}`, 'g'), '.')
+                            .replace(new RegExp(`\\${dashSymbol}`, 'g'), '-');
+
+                        // Find corresponding letter
+                        let letter = '?';
+                        for (const [l, code] of Object.entries(ciphers.pollux.morseCode)) {
+                            if (code === morseGroup) {
+                                letter = l;
+                                break;
+                            }
+                        }
+
+                        workedSolution += `
+            <tr>
+                <td>${group}</td>
+                <td>
+                    ${dotSymbol} → dot (.), 
+                    ${dashSymbol} → dash (-)
+                    → ${morseGroup}
+                </td>
+                <td>${letter}</td>
+            </tr>
+        `;
+                    });
+
+                    workedSolution += `</table>
+        <p>Decryption Steps:</p>
+        <ul>
+            <li>Replace ${dotSymbol} with dots (.)</li>
+            <li>Replace ${dashSymbol} with dashes (-)</li>
+            <li>Convert Morse code to letters</li>
+        </ul>
+    `;
+                    break;
+            }
+
+            // Add the final answer
+            workedSolution += `<p class="solution-result">Complete plaintext: <strong>${currentProblem.plaintext}</strong></p>`;
+
+            // Show the worked-out solution
+            solutionDiv.innerHTML = workedSolution;
+
+            // Also reveal the plaintext in the result message
+            const resultDiv = document.getElementById('resultMessage');
+            resultDiv.innerHTML = `<p>The plaintext is: <strong>${currentProblem.plaintext}</strong></p>`;
+        }
+
+        // Add this to the CSS in the head section
+        document.head.insertAdjacentHTML('beforeend', `
+<style>
+    .solution-table {
+        border-collapse: collapse;
+        margin: 15px 0;
+        width: 100%;
+    }
+    .solution-table th, .solution-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+    .solution-table th {
+        background-color: #f2f2f2;
+    }
+    .solution-result {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #e6f7ff;
+        border-left: 5px solid #1890ff;
+    }
+</style>
+`);
+
+        // Generate initial problem on page load
+        window.onload = generateNewProblem;
+    </script>
+</body>
+
+</html>

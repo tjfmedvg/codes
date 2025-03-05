@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Cryptography Learning Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+    background-color: white; /* Changed to white */
+    color: black; /* Secondary Black for text */
+}
+
+.cipher-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-color: #fff; /* Ensure card background is white */
+}
+
+.cipher-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.category-header {
+    background: #D4AF37; /* Primary Gold gradient */
+    color: black; /* Secondary Black for header text */
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-5xl font-bold text-center text-yellow-700mb-12">
+            Cryptography Mastery Platform
+        </h1>
+        <a href="index.html">Practice Codes</a>
+
+        <div id="category-container">
+            <!-- Categories will be dynamically populated -->
+        </div>
+
+        <div id="modal-container" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-8">
+                <div id="modal-content" class="prose">
+                    <!-- Modal Content Will Be Dynamically Inserted -->
+                </div>
+                <button id="close-modal" class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cryptographyTechniques = {
+            "Substitution Ciphers": [
+                {
+                    name: "Caesar Cipher",
+                    description: "A simple substitution cipher where each letter is shifted by a fixed number of positions in the alphabet.",
+                    encryption: "Shift each letter by n positions",
+                    decryption: "Shift back by n positions",
+                    complexity: "Low",
+                    example: "Shift 3: HELLO → KHOOR"
+                },
+                {
+                    name: "Atbash Cipher",
+                    description: "A substitution cipher where A becomes Z, B becomes Y, creating a reversed alphabet mapping.",
+                    encryption: "Mirror each letter in the alphabet",
+                    decryption: "Apply the same mirroring process",
+                    complexity: "Very Low",
+                    example: "SECRET → HVXIVG"
+                },
+                {
+                    name: "Mono-alphabetic Substitution",
+                    description: "Each letter is consistently replaced by another letter throughout the message.",
+                    encryption: "Use a fixed substitution alphabet",
+                    decryption: "Reverse the substitution mapping",
+                    complexity: "Medium",
+                    example: "Mapping S→Q, E→X creates unique substitution pattern"
+                }
+            ],
+            "Transposition Ciphers": [
+                {
+                    name: "Complete Columnar Cipher",
+                    description: "Arrange text in a grid and reorder columns based on a key.",
+                    encryption: "Write text in rows, reorder columns by key",
+                    decryption: "Restore original column order",
+                    complexity: "Medium",
+                    example: "Message rearranged based on column permutation"
+                },
+                {
+                    name: "Rail Fence Cipher",
+                    description: "Write message diagonally across multiple 'rails' and read off row by row.",
+                    encryption: "Zigzag text across rails, read row by row",
+                    decryption: "Reconstruct original message pattern",
+                    complexity: "Low",
+                    example: "CRYPTOGRAPHY becomes complex zigzag pattern"
+                }
+            ],
+            "Advanced Substitution Ciphers": [
+                {
+                    name: "Affine Cipher",
+                    description: "Uses modular arithmetic to encrypt each letter mathematically.",
+                    encryption: "E(x) = (ax + b) mod 26",
+                    decryption: "Requires modular multiplicative inverse",
+                    complexity: "High",
+                    example: "Depends on chosen a and b values"
+                },
+                {
+                    name: "Hill Cipher",
+                    description: "A polygraphic substitution cipher using linear algebra and matrix multiplication.",
+                    encryption: "Multiply message vectors by encryption matrix",
+                    decryption: "Use matrix inverse",
+                    complexity: "Very High",
+                    example: "Requires advanced matrix operations"
+                },
+                {
+                    name: "Porta Cipher",
+                    description: "A polyalphabetic substitution cipher using a tableau of shifted alphabets.",
+                    encryption: "Use Porta tableau for complex substitution",
+                    decryption: "Reverse tableau substitution",
+                    complexity: "High",
+                    example: "Letter pairs transformed through tableau"
+                }
+            ],
+            "Historical and Specialized Ciphers": [
+                {
+                    name: "Baconian Cipher",
+                    description: "Steganographic method representing letters as 5-bit binary sequences.",
+                    encryption: "Convert letters to 5-bit binary codes",
+                    decryption: "Translate binary sequences back to letters",
+                    complexity: "Medium",
+                    example: "A = 'aaaaa', B = 'aaaab'"
+                },
+                {
+                    name: "Aristocrats",
+                    description: "A type of cryptogram where letter frequencies and patterns are key to solving.",
+                    encryption: "Complex substitution with statistical characteristics",
+                    decryption: "Analyze letter frequencies and common word patterns",
+                    complexity: "High",
+                    example: "Requires advanced frequency analysis"
+                },
+                {
+                    name: "Pollux Cipher",
+                    description: "A cipher using Morse code-like representations for encryption.",
+                    encryption: "Convert text to signal patterns",
+                    decryption: "Decode signal patterns back to text",
+                    complexity: "Medium",
+                    example: "Text transformed into signal representations"
+                }
+            ],
+            "Advanced Cryptanalysis Techniques": [
+                {
+                    name: "Mathematical Cryptanalysis of Affine Cipher",
+                    description: "Systematic approach to breaking Affine cipher using mathematical properties.",
+                    techniques: [
+                        "Frequency analysis",
+                        "Modular arithmetic inverse calculation",
+                        "Brute force key space exploration"
+                    ],
+                    difficulty: "High",
+                    complexity: "Very High"
+                },
+                {
+                    name: "Cryptanalysis of Pollux and Morbit Ciphers",
+                    description: "Analytical methods to break signal-based encryption systems.",
+                    techniques: [
+                        "Pattern recognition",
+                        "Signal transformation analysis",
+                        "Statistical decoding"
+                    ],
+                    difficulty: "High",
+                    complexity: "High"
+                },
+                {
+                    name: "Cryptanalysis of Porta Cipher",
+                    description: "Breaking polyalphabetic substitution through advanced analysis.",
+                    techniques: [
+                        "Tableau pattern identification",
+                        "Frequency distribution analysis",
+                        "Key length determination"
+                    ],
+                    difficulty: "Very High",
+                    complexity: "Very High"
+                }
+            ],
+            "Specialized Cryptanalysis": [
+                {
+                    name: "Cryptanalysis of Rail Fence Cipher",
+                    description: "Techniques for breaking transposition-based encryption.",
+                    techniques: [
+                        "Pattern recognition",
+                        "Rail number guessing",
+                        "Message reconstruction"
+                    ],
+                    difficulty: "Medium",
+                    complexity: "Medium"
+                },
+                {
+                    name: "Cryptanalysis of Fractionated Morse Cipher",
+                    description: "Breaking cipher systems that use Morse code fractionation.",
+                    techniques: [
+                        "Morse code analysis",
+                        "Fractionation pattern breaking",
+                        "Statistical decoding"
+                    ],
+                    difficulty: "High",
+                    complexity: "High"
+                }
+            ],
+            "Linguistic Cryptography": [
+                {
+                    name: "Spanish Xenocrypt",
+                    description: "A specialized cryptographic technique involving language-specific encryption.",
+                    encryption: "Language-specific substitution and transformation",
+                    decryption: "Reverse linguistic encryption patterns",
+                    complexity: "Very High",
+                    example: "Unique to Spanish language structures"
+                },
+                {
+                    name: "Patristocrats",
+                    description: "A cryptographic variant focusing on specific linguistic patterns.",
+                    encryption: "Complex linguistic substitution",
+                    decryption: "Advanced pattern and frequency analysis",
+                    complexity: "High",
+                    example: "Requires deep linguistic knowledge"
+                }
+            ],
+            "Numeric and Mathematical Cryptography": [
+                {
+                    name: "Cryptarithms",
+                    description: "Mathematical puzzles where digits are replaced by letters in arithmetic problems.",
+                    techniques: [
+                        "Digit substitution",
+                        "Constraint solving",
+                        "Logical deduction"
+                    ],
+                    difficulty: "High",
+                    complexity: "Very High"
+                },
+                {
+                    name: "Nihilist Cipher",
+                    description: "A complex cipher using Polybius square and additional mathematical transformations.",
+                    encryption: "Coordinate-based substitution with additional math",
+                    decryption: "Reverse coordinate and mathematical transformations",
+                    complexity: "Very High",
+                    example: "Requires multiple transformation stages"
+                }
+            ]
+        };
+
+        const categoryContainer = document.getElementById('category-container');
+const modalContainer = document.getElementById('modal-container');
+const modalContent = document.getElementById('modal-content');
+const closeModal = document.getElementById('close-modal');
+
+function createCategorySection(categoryName, techniques) {
+    const categorySection = document.createElement('div');
+    const gridContainer = document.createElement('div');
+
+    const categoryHeader = document.createElement('h2');
+    categoryHeader.className = 'category-header text-2xl font-bold mb-4';
+    categoryHeader.textContent = categoryName;
+
+    gridContainer.className = 'grid grid-cols-1 md:grid-cols-3 gap-6';
+
+    techniques.forEach(technique => {
+        const card = document.createElement('div');
+        card.className = 'cipher-card bg-white rounded-xl shadow-md p-6 cursor-pointer hover:bg-yellow-50'; // Hover to light gold
+        card.innerHTML = `
+            <h3 class="text-xl font-semibold text-yellow-700 mb-2">${technique.name}</h3>
+            <p class="text-gray-600 mb-4">${technique.description.substring(0, 100)}...</p>
+            <div class="text-sm text-yellow-500 hover:text-yellow-700">Explore Details →</div>
+        `;
+        card.addEventListener('click', () => showTechniqueDetails(technique));
+        gridContainer.appendChild(card);
+    });
+
+    categorySection.appendChild(categoryHeader);
+    categorySection.appendChild(gridContainer);
+    return categorySection;
+}
+
+function showTechniqueDetails(technique) {
+    const detailsHTML = `
+        <h2 class="text-3xl font-bold text-yellow-800 mb-4">${technique.name}</h2>
+        <p class="text-gray-700 mb-4">${technique.description}</p>
+
+        ${technique.encryption ? `
+            <h3 class="text-2xl font-semibold text-yellow-700 mt-6 mb-3">Encryption Method:</h3>
+            <p class="text-gray-700">${technique.encryption}</p>
+        ` : ''}
+
+        ${technique.decryption ? `
+            <h3 class="text-2xl font-semibold text-yellow-700 mt-6 mb-3">Decryption Method:</h3>
+            <p class="text-gray-700">${technique.decryption}</p>
+        ` : ''}
+
+        ${technique.example ? `
+            <h3 class="text-2xl font-semibold text-yellow-700 mt-6 mb-3">Example:</h3>
+            <div class="bg-yellow-50 p-4 rounded">
+                <code class="text-yellow-900">${technique.example}</code>
+            </div>
+        ` : ''}
+
+        ${technique.techniques ? `
+            <h3 class="text-2xl font-semibold text-yellow-700 mt-6 mb-3">Cryptanalysis Techniques:</h3>
+            <ul class="list-disc list-inside text-gray-700">
+                ${technique.techniques.map(t => `<li>${t}</li>`).join('')}
+            </ul>
+        ` : ''}
+
+        <div class="mt-6 bg-gray-100 p-4 rounded">
+            <strong>Complexity:</strong> ${technique.complexity || 'Not Specified'}
+        </div>
+    `;
+
+    modalContent.innerHTML = detailsHTML;
+    modalContainer.classList.remove('hidden');
+    modalContainer.classList.add('flex');
+}
+
+closeModal.addEventListener('click', () => {
+    modalContainer.classList.remove('flex');
+    modalContainer.classList.add('hidden');
+});
+
+modalContainer.addEventListener('click', (e) => {
+    if (e.target === modalContainer) {
+        modalContainer.classList.remove('flex');
+        modalContainer.classList.add('hidden');
+    }
+});
+
+// Populate Categories
+Object.entries(cryptographyTechniques).forEach(([categoryName, techniques]) => {
+    categoryContainer.appendChild(createCategorySection(categoryName, techniques));
+});
+    </script>
+</body>
+</html>
